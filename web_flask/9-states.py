@@ -26,7 +26,7 @@ def list_states_id(id):
     """/states/<id> all states"""
     selected_state = None
     for state in storage.all(State).values():
-        if state.id == uuid(id):
+        if state.id == id:
             selected_state = state
     if selected_state is not None:
         cities = sorted(selected_state.cities, key=lambda city: city.name)
