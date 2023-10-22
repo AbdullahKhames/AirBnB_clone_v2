@@ -18,12 +18,6 @@ def list_cities_states():
     """listing all states"""
     states = sorted(storage.all(State).values(), key=lambda state: state.name)
     cities = {}
-    # if getenv('HBNB_TYPE_STORAGE') == 'db':
-    #     for state in states:
-    #         cities[state.id] = sorted(state.cities, key=lambda city: city.name)
-    # elif getenv('HBNB_TYPE_STORAGE') == 'file':
-    #     for state in states:
-    #         cities[state.id] = sorted(state.cities, key=lambda city: city.name)
     for state in states:
         cities[state.id] = sorted(state.cities, key=lambda city: city.name)
     return render_template('8-cities_by_states.html',
