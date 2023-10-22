@@ -1,13 +1,6 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
-from models.base_model import BaseModel
-from models.user import User
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.place import Place
-from models.review import Review
 
 
 class FileStorage:
@@ -41,19 +34,9 @@ class FileStorage:
 
     def reload(self):
         """Loads storage dictionary from file"""
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.place import Place
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.review import Review
+        from models.engine.available_class import FileUtil
 
-        classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
+        classes = FileUtil.my_Classes
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
@@ -68,7 +51,11 @@ class FileStorage:
         if obj is None:
             return
         else:
-            objKey = f"{obj. __class__.__name__}.{obj.id}"
+            objKey = f"{obj.__class__.__name__}.{obj.id}"
             if objKey in FileStorage.__objects:
                 del FileStorage.__objects[objKey]
                 self.save()
+
+    def close(self):
+        """deserializing the JSON file to objects"""
+        self.reload()

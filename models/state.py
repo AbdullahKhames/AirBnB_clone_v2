@@ -17,6 +17,7 @@ class State(BaseModel, Base):
     else:
         """ State class """
         name = ""
+
         @property
         def cities(self):
             """

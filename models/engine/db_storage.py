@@ -62,32 +62,12 @@ class DBStorage:
 
     def reload(self):
         """Loads storage dictionary from file"""
-        from models.base_model import BaseModel, Base
-        from models.user import User
-        from models.place import Place
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.review import Review
+        from models.base_model import Base
 
-        classes = {
-            'BaseModel': BaseModel, 'User': User, 'Place': Place,
-            'State': State, 'City': City, 'Amenity': Amenity,
-            'Review': Review
-        }
         Base.metadata.create_all(bind=self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
-        Session = scoped_session(session_factory)
-        self.__session = Session()
-        # try:z
-        #     temp = {}
-        #     with open(FileStorage.__file_path, 'r') as f:
-        #         temp = json.load(f)
-        #         for key, val in temp.items():
-        #             self.all()[key] = classes[val['__class__']](**val)
-        # except FileNotFoundError:
-        #     pass
+        self.__session = scoped_session(session_factory)
 
     def delete(self, obj=None):
         """delete object from __objects f it’s inside"""
@@ -99,3 +79,6 @@ class DBStorage:
                     toDelete = (self.__session.query(v)
                                 .filter(v.id == obj.id).first())
                     self.__session.delete(toDelete)
+
+    def close(self):
+        self.__session.remove()
